@@ -6,6 +6,9 @@
 \usepackage{graphicx}
 \usepackage{geometry}
 \usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\definecolor{processblue}{cmyk}{0.96,0,0,0}
 
 \usepackage{lipsum}
 \usepackage{titlesec}
@@ -62,7 +65,7 @@
   \LMUTitle
       {Les faux profils\\
       sur les réseaux sociaux\\
-      et les moyens de détection}              
+      et leurs moyens de détection}              
       {Lucas Nayet}                       
       {Mémoire Master 2 MIAGE - Juin 2019}                          
 \thispagestyle{empty}
@@ -318,7 +321,7 @@ Ci-dessous, l'outil Google Images permettant d'effectuer cette manoeuvre.
   \end{figure}
 
 \subsubsection{Obtenir l’adresse IP de votre interlocuteur}
-Il est possible de piéger quelqu'un afin de connaître son adresse IP, sa location, ou d'autres informations. En localisant votre escroc, vous saurez par exemple s’il est en France ou dans un pays exotique. Un grand nombre d'escroqueries se base là-dessus car la personne ne vous dira pas la vérité sur sa localisation. Ainsi, vous serez en mesure d'établir la véracité du profil suspect avec cette méthode. Néanmoins, cette méthode nécessite une connaissance informatique d'un certain niveau pour être effectuée. 
+Il est possible de piéger quelqu'un afin de connaître son adresse IP, sa localisation, ou d'autres informations. En localisant votre escroc, vous saurez par exemple s’il est en France ou dans un pays exotique. Un grand nombre d'escroqueries se base là-dessus car la personne ne vous dira pas la vérité sur sa localisation. Ainsi, vous serez en mesure d'établir la véracité du profil suspect avec cette méthode. Néanmoins, cette méthode nécessite une connaissance informatique d'un certain niveau pour être effectuée. 
 
 \subsubsection{Vérification du réseau du profil suspecté}
 Élément très important dans une démarche de détection de faux comptes ! Le réseau du profil suspecté ! Énormément d'escrocs ne prendront pas la peine d'établir un véritable réseau d'amis sur le profil fake créé afin de piéger leurs prochaines cibles. Tout simplement par faute de temps, car prendre des semaines pour se faire un véritable réseau pour une seule cible n'est pas optimale mais aussi par l'inutilité générale de la démarche : les escrocs partent du principe qu'un profil nouvellement créé et globalement vide suffira et ils ont souvent raison. C'est donc là que cette méthode est très importante et est l'une des plus capitales pour détecter un faux profil sans passer par une méthode informatique.\\
@@ -426,35 +429,124 @@ Désormais, il me reste à vous présenter mon apport personnel dans la détecti
 
 \chapter{Apport personnel}
 \section{Préambule}
-L'objectif de cette dernière partie est de proposer des solutions afin d'enrichir l'existant informatique dans le cadre de la problématique de ce mémoire. On a vu précédemment avec l'analyse de l'existant, qu'aucun algorithme n'utilise plusieurs dimensions en même temps. Je vais donc présenter dans mon apport, un algorithme réglant ce problème. Je vais également présenter une solution passant par la méthode des graphes, ces derniers étant utilisés en recherche opérationnelle principalement. 
+L'objectif de cette dernière partie est d'exposer une contribution afin d'enrichir l'existant informatique dans le cadre de la problématique de ce mémoire. On a vu précédemment avec l'analyse de l'existant, qu'aucun algorithme n'utilise plusieurs dimensions en même temps. Ainsi, dans un premier temps, j'avais pensé à proposer un algorithme permettant d'utiliser toutes les variables clés d'un profil de manière simultanée, cependant le fait que les algorithmes proposés soient implémentés d'une manière différente rend cette solution peu envisageable. \\
 
-\section{Réunification de l'existant}
-
-Première solution personnelle que j'ai à vous présenter, il s'agit d'un algorithme qui serait une amélioration de l'existant actuel. Cet algorithme traiterait plusieurs variables décisives pour établir un jugement sur la véracité d'un profil, à savoir l'âge, le sexe, les photos, les publications, l'activité du profil, le lien de ce profil avec les autres et les éléments de langage. Une sorte de réunification de l'existant actuel. \\
-
-Mais cela ne s'arrêterait pas là. Cet algorithme traiterait d'abord de manière indépendante chaque variable et établirait un premier jugement séparé sur chacune d'entre elles. Si le nombre de variables étant jugées comme fausses au résultat est supérieur à celles étant jugées comme véridiques, alors le profil sera déclaré fake. En résumé, l'algorithme proposé ferait le boulot d'un algorithme déjà existant mais avec toutes les variables. \\
-
-Cependant, cet algorithme aurait ensuite une seconde étape, qu'aucun algorithme existant ne traite, la cohérence des variables entre elles. C'est d'ailleurs tout à fait logique, étant donné que les algorithmes actuelles n'en traitent qu'une voire deux en même temps. L'algorithme réunirait les variables étudiées et recommencerait l'étude afin d'établir un nouveau jugement quant à la véracité du profil testé. Si ce jugement correspond au précédent, alors il avertira l'utilisateur que c'est le résultat reste le même. Le cas échéant, il préviendra l'utilisateur que le résultat est différent et qu'il faut donc faire attention car la cohérence ne correspond pas avec l'indépendance. Il sera alors possible pour l'utilisateur de reprocéder à l'opération. 
+L'autre solution que j'ai envisagé et qui va finalement être celle retenue est d'utiliser les graphes.
 
 \section{La méthode des graphes}
-\subsection{Présentation}
-Seconde solution personnelle que j'ai à vous présenter, il s'agit de passer par les graphes. La théorie des graphes appartient au domaine de la recherche opérationnelle. \\
+Ici, il s'agit de passer par les graphes. La théorie des graphes appartient au domaine de la recherche opérationnelle. \\
 
 Dans le domaine mathématique et informatique, un graphe est la donnée d'un ensemble des sommets et d'un ensemble d'arêtes qui relient deux à deux certains des sommets. Un graphe possède deux caractéristiques principales : \\
 - son orientation ou non, selon le fait que les arêtes soient munies ou non d'un sens de parcours.\\
-- sa pondération ou non, selon le fait que les arêtes soient affectées d'une valeur ou non.\\
+- sa pondération ou non, selon le fait que les arêtes soient affectées d'une valeur ou non.
 
-Un autre élément important qui va être fondamental pour cet apport est la notion de chemin d'un graphe. En effet, un chemin relie une extrémité à une autre, et sa longueur correspond au nombre d'arêtes ou bien, dans le cas d'un graphe pondéré, la somme des poids des arêtes.\\
+\subsection{Les graphes de référence pour l'apport}
+\subsubsection{Les graphes de relations}
+Dans cette partie, cinq individus vont être pris pour exemple, Bob, Alice, Romain, Julie et Léo. Les graphes qui vont suivre vont être représentatifs des relations entre ces personnes. 
+\subsubsection{Exemple de graphe de relation non-orienté} 
+Ici, les relations d'amitié entre les cinq individus nommés plus haut vont être représentées sous forme de graphe non-orienté. \\
 
-L'apport ici consiste à dire qu'un profil véridique passe par un chemin prédéfini que tout profil véridique devra respecté. Dans le cas contraire, le profil sera déclaré comme étant faux.\\ Cette solution se base tout d'abord sur l'âge saisi. En fonction de ce dernier, les personnes avec qui l'individu va se lier devront en majorité avoir la même tranche d'âge et l'individu devra avoir des activités sur son profil coïncidant avec son âge. Par exemple, il sera suspect de voir qu'un individu ayant précisé sur son profil un âge de 20 ans, commente des pages de pétanque. Il sera encore plus suspect de voir un profil d'homme de 50 ans discuter avec des filles de 20 ans. \\
-Cette solution va aussi se baser sur le sexe saisi. Le principe sera le même, si le chemin suivi par un profil ayant saisi un sexe féminin ne coïncide pas avec les activités d'une femme, alors la véracité du profil sera remise en cause. Par exemple, si une femme commente régulièrement des pages à prédestination masculine, cela pourra être déclaré comme étant suspect. 
+\begin{tikzpicture}
+    \node (n6) at (1,10) {Bob};
+    \node (n4) at (4,8)  {Alice};
+    \node (n5) at (8,9)  {Romain};
+    \node (n1) at (11,8) {Julie};
+    \node (n2) at (9,6)  {Léo};
 
-\subsection{Critique}
-La méthode des graphes est intéressante selon moi car elle permet de mettre le doigt sur les profils ne respectant pas le chemin conventionnel que tout compte doit accomplir normalement. Elle permet aussi de mettre en avant les enjeux autour d'un profil de manière simple et compréhensible. \\
+  \foreach \from/\to in {n6/n4,n4/n5,n5/n1,n1/n2,n2/n4}
+    \draw (\from) -- (\to);
+\end{tikzpicture}\\
 
-Cependant, cette méthode trouve selon moi ses limites dans le sens où certaines personnes ne rentrent pas volontairement des informations de profil dans le but de ne pas partager des informations qu'elles jugent privées comme notamment l'âge et cela peut compromettre l'efficacité de cette méthode, dans le sens où un profil pourrait être déclaré comme étant faux alors qu'il ne l'est en réalité pas. Par ailleurs, le fait qu'il est tout à fait possible que deux personnes n'ayant aucun point commun peuvent avoir un lien compromet la fiabilité de la méthode. \\
+Ce type de graphe correspond au genre de graphes que l'on peut trouver sur Facebook. En effet, pour être ami avec une autre personne, les deux tiers doivent nécessairement s'ajouter mutuellement, le graphe représentatif de cela n'aura donc pas d'orientation.\\
+Ici, on peut retenir que Bob est ami avec Alice, qu'Alice est amie avec Romain, Bob et Léo, que Romain est ami avec Alice et Julie, que Julie est amie avec Léo et Romain et enfin, que Léo est ami avec Alice et Julie. On peut également noter, par exemple, que Romain et Bob ont un ami en commum, Alice et que Romain et Léo en ont deux, Alice et Julie. 
 
-Pourtant, passer par les graphes permet de mettre en évidence un profil suspect qui aurait des activités ne correspondant pas à ses informations saisies, notamment pour l'âge ou le sexe. Ainsi, cette solution reste selon moi, parfaitement viable dans certains cas et trouve son avantage dans la compréhension et l'accessibilité par rapport aux algorithmes informatiques lourds et confus pour un individu non programmeur.
+\subsubsection{Exemple de graphe de relation orienté simple}
+Ici, les relations d'amitié entre les cinq individus nommés plus haut vont être représentées sous forme de graphe orienté simple. \\
+\begin{center}
+\begin{tikzpicture}[-latex ,auto ,node distance = 2cm and 3cm ,on grid ,semithick ,state/.style ={ circle ,top color =white , bottom color = processblue!20 , draw, processblue , text=blue , minimum width =1 cm}]
+\node[state] (A) { Bob };
+\node[state] (B) [above left = of A] { Alice };
+\node[state] (C) [above right = of A] { Romain };
+\node[state] (D) [below right = of A] { Julie };
+\node[state] (E) [below left = of A] { Léo };
+\path (A) edge [bend left] node[above] {} (B);
+\path (B) edge [bend left] node[above] {} (C);
+\path (C) edge [bend left] node[above] {} (D);
+\path (E) edge [bend left] node[above] {} (C);
+\path (E) edge [bend left] node[above] {} (D);
+\path (B) edge [bend left] node[above] {} (E);
+\end{tikzpicture}
+\end{center}
+
+Ce type de graphe correspond au genre de graphes que l'on peut trouver sur Twitter ou Instagram, avec le système de followings et de followers. Contrairement à Facebook, il n'est pas nécessaire d'avoir un ajout double de la part des deux parties pour pouvoir suivre le profil de l'autre. L'orientation du graphe se justifie alors.\\
+Ici, on peut apprendre de ce graphe par exemple qu'Alice suit Romain, que Romain suit Julie, que Léo suit Julie, que Bob suit Alice..., ainsi on peut conclure par exemple que Léo et Romain suivent la même personne, à savoir Julie. Ce graphe ne permet pas de mettre en évidence, ou du moins d'établir une hypothèse sur le fait que les personnes se connaissent ou non, puisque l'orientation est simple. 
+
+\subsubsection{Exemple de graphe de relation orienté double}
+Ici, les relations d'amitié entre les cinq individus nommés plus haut vont être représentées sous forme de graphe orienté double.\\
+\begin{center}
+\begin{tikzpicture}[-latex ,auto ,node distance = 3cm and 4cm ,on grid ,semithick ,state/.style ={ circle ,top color =white , bottom color = processblue!20 , draw, processblue , text=blue , minimum width =1 cm}]
+\node[state] (A) { Bob };
+\node[state] (B) [above left = of A] { Alice };
+\node[state] (C) [above right = of A] { Romain };
+\node[state] (D) [below right = of A] { Julie };
+\node[state] (E) [below left = of A] { Léo };
+\path (A) edge [bend left] node[above] {} (B);
+\path (B) edge [bend left] node[above] {} (C);
+\path (C) edge [bend left] node[above] {} (B);
+\path (C) edge [bend left] node[above] {} (D);
+\path (D) edge [bend left] node[above] {} (C);
+\path (E) edge [bend left] node[above] {} (C);
+\path (E) edge [bend left] node[above] {} (D);
+\path (B) edge [bend left] node[above] {} (E);
+\path (E) edge [bend left] node[above] {} (B);
+\end{tikzpicture}
+\end{center}
+
+Ce type de graphe correspond toujours au genre de graphes que l'on peut trouver sur Twitter ou Instagram, avec le système de followings et de followers. Cependant, ici, le fait que l'orientation soit double permet de nous apprendre si la personne qui suit une autre personne a été suivie en retour ou non. On apprend, qu'ici, Alice/Romain, Romain/Julie, et Alice/Léo se suivent mutuellement, on peut ainsi établir une éventuelle hypothèse sur le fait que ces derniers se connaissent. 
+
+\subsubsection{Le graphe d'actions}
+Contrairement aux graphes précédents qui étaient autour des relations entre profils, ce graphe-ci va présenter, de manière simplifiée, les actions qu'un profil va réaliser sur un réseau social. On va utiliser pour cela un graphe orienté pondéré.
+\begin{center}
+\begin{tikzpicture}[-latex ,auto ,node distance = 3cm and 4cm ,on grid ,semithick ,state/.style ={ circle ,top color =white , bottom color = processblue!20 , draw, processblue , text=blue , minimum width =1 cm}]
+\node[state] (A) { Bob };
+\node[state] (B) [above left = of A] { Sport };
+\node[state] (C) [above right = of A] { Cuisine };
+\node[state] (D) [below left = of A] { Politique };
+\node[state] (E) [below right = of A] { Vêtements F };
+\path (A) edge [bend left] node[above] {$76$} (B);
+\path (A) edge [bend left] node[above] {$25$} (C);
+\path (A) edge [bend left] node[above] {$37$} (D);
+\path (A) edge [bend left] node[above] {$2$} (E);
+\end{tikzpicture}
+\end{center}
+Ici, ce sont les actions de Bob du mois dernier qui sont tracées via ce graphe. La pondération représente le nombre de fois que ce dernier a consulté ou commenté sur un réseau social des pages ou comptes en rapport avec le domaine inscrit sur le sommet associé. 
+
+\subsection{Explications de l'apport}
+Il a été présenté, précédemment, différents graphes qui vont servir de support pour les explications de mon apport. Les graphes représentent, selon moi, un outil pouvant potentiellement être très puissant dans la détection des faux profils, et je vais vous expliquer pourquoi dans cette sous-partie.
+
+\subsubsection{Les graphes de relations}
+Les graphes de relations permettent de schématiser de manière simple les relations existant entre différents profils. Afin de se révéler efficace, ce type de graphe va notamment se baser sur le concept d'amis en communs que l'on trouve sur Facebook.\\
+En effet, avec le premier graphe de relation, on a pu établir que Romain et Bob ont un ami en commum, Alice et que Romain et Léo en ont deux, Alice et Julie. Ainsi, on peut conclure que Romain et Bob sont liés par Alice et Romain et Léo sont liés par Alice et Julie. Plus des profils auront des amis en communs, plus ces derniers seront liés et plus ces derniers seront moins suspects. Il a également été dit, lorsque les moyens de détection naïfs des profils ont été explicités, qu'un escroc prendra rarement la peine d'établir un véritable réseau solide, principalement par faute de temps. Ainsi, si un profil en particulier se dégage par le fait qu'il n'est pas d'ami en commun et qu'il soit isolé des autres profils, cela peut paraître suspect. Dans notre exemple, Bob serait potentiellement suspect, car il est ami avec Alice mais est totalement isolé du reste du réseau. \\
+Il a également été dit qu'il est monnaie courante qu'un escroc établisse un faux réseau de quelques personnes, toutes fakes, afin d'augmenter sa crédibilité auprès de ses victimes. Les graphes d'actions se révéleraient très utiles dans ce genre de cas car ils permettraient de repérer de manière simple un groupe de profils s'étant ajouté mutuellement mais n'ayant aucun autre ami à côté. \\
+
+Les deux autres graphes de relations, ceux orientés, permettent de mettre la lumière sur les faux profils de manière similaire mais également de manière différente. En effet, comme évoqué précédemment, avec ces graphes, l'ajout réciproque n'est pas obligatoire, c'est le cas de figure que l'on peut par exemple trouver sur Twitter ou Instagram avec le système d'abonnements et d'abonnés. Repérer un faux profil avec la même manière que pour un cas où l'ajout réciproque est obligatoire peut toujours se faire, mais cela sera forcément plus compliqué. En revanche, la non-réciprocité obligatoire de l'ajout permet d'utiliser une autre méthode, celle des clusters informatiques. Pour la définition, il s'agit de groupes de serveurs indépendants fonctionnant comme un seul et même système. Le but ici est de jouer sur le fait que deux profils ayant le même sexe, un âge similaire, venant d'une classe sociale similaire, ayant une origine commune etc... fonctionnent d'une manière plus ou moins identique, suivent les mêmes profils et forment ainsi, un seul et même réseau bien qu'ils soient indépendants au départ. Par exemple, il est logique que deux adolescentes suivent Ariana Grande, une superstar actuelle de la pop sur Instagram ou Twitter. Ainsi, le but ici serait de débusquer un profil ne rentrant pas dans un réseau "habituel" et de le déclarer comme étant suspect. 
+
+\subsubsection{Le graphe d'actions}
+Le graphe d'action permet de suivre de manière très efficace  l'activité d'un profil. Avec l'exemple donné, on constate que Bob, le mois dernier, a consulté ou commenté environ deux fois plus de comptes ou de pages à vocation sportive qu'à vocation politique. On remarque également qu'il a seulement consulté que deux fois des comptes ou pages en rapport avec des vêtements féminins. \\
+
+On comprend ainsi assez aisément tout l'enjeu de cette méthode dans la détection de faux profils. En effet, en récoltant et en traçant l'activité d'un profil, on peut comparer la réalité avec la théorie. On peut également établir des hypothèses sur les actions d'un profil en fonction des informations saisies sur ce dernier mais aussi de repérer les profils suspects. \\
+
+En effet ici, il semble tout à fait logique que Bob ait consulté ou commenté le mois dernier seulement 2 fois des pages ou comptes en rapport avec les vêtements féminins, étant donné qu'il s'agit d'un homme. Si le nombre de consultations ou de commentaires aurait été élevé, on aurait pu établir le profil de Bob comme étant suspect. Un autre exemple que l'on pourrait citer est par exemple, d'observer une personne qui se dit avoir 20 ans être active sur des groupes où l'on discute de la retraite. Les graphes d'actions se révéleraient donc utiles pour repérer des profils suspects mais également, même si cela sort du cadre de ce mémoire, pour établir des estimations sur les activités des personnes en fonction de leur âge, de leur sexe, ou encore de leur classe sociale. Ici, la méthode des clusters évoquée pour les graphes de relations serait toujours valable : deux personnes ayant saisies des informations similaires sur leur profil respectif aurait tendance à avoir une activité plus ou moins similaire. Le cas échéant, si l'on trouve un profil ne respectant pas cela, ce dernier pourrait être éventuellement déclaré comme étant suspect.
+
+\section{Critique de l'apport}
+La méthode des graphes est intéressante car elle permet de mettre en avant les enjeux de véracité d'un profil de manière simple et compréhensible pour un individu lambda. Cette méthode peut selon moi être extrêmement puissante car elle permet de facilement isoler un profil ou un groupe de profils suspect via les graphes de réseau et de facilement détecter les profils ayant des activités ne correspondant pas aux informations qu'ils ont saisies via les graphes d'actions. \\
+
+Cependant, cette méthode peut trouver selon moi ses limites dans le fait que certaines personnes ne rentrent volontairement pas des informations de profil véridiques dans le but de ne pas partager des informations qu'elles jugent privées ou qu'elles veulent garder secrètes afin de préserver leur tranquillité comme notamment l'âge ou le sexe et cela peut compromettre l'efficacité de cette méthode, dans le sens où un profil pourrait être déclaré comme étant faux et surtout malveillant alors qu'il ne l'est en réalité pas et ainsi d'augmenter le taux de faux positifs.\\ 
+Il faut également prêter attention aux événements particuliers, pour reprendre notre exemple de pages ou comptes de vêtements féminins le mois de la Saint-Valentin ou de la fête des mères, il ne serait guère illogique que l'activité d'un homme sur ce genre de pages connaisse une importance hausse et par conséquent, apporterait une quantité importante de faux positifs.\\
+Par ailleurs, le fait qu'il soit tout à fait possible que deux personnes n'ayant aucun point commun peuvent avoir un lien peut également compromettre la fiabilité de la méthode. \\
+Se pose aussi la question du passage à l'échelle. Les graphes ont le comportement attendu pour un faible nombre de profils mais cela serait-il toujours le cas pour des centaines de milliers de profils ? \\
+
+Néanmoins, les graphes pour ma part, restent une solution parfaitement viable et trouvent leur principal avantage dans le fait qu'ils soient facilement compréhensibles pour tous, là ou on ne peut pas en dire de même avec des algorithmes.
 
 \chapter{Conclusion}
 Ce mémoire a trouvé sa raison d'être autour des réseaux sociaux qui sont une sous-catégorie des médias sociaux. Ces outils puissants apportent énormément d'intérêt, le principal étant la communication. En effet, le réseau social a radicalement changé notre manière de communiquer. Cependant, un individu peut facilement perdre le contrôle de son identité numérique. Il est même raisonnable de penser que l'on en a jamais véritablement le contrôle, puisque ce que l'on fait sur les réseaux sociaux reste en mémoire, et ce, même si l'on supprime nos traces. L'exemple de Facebook parait le plus parlant, car un compte, même désactivé, reste dans la base de données du géant américain et n'est par conséquent jamais totalement supprimé pour eux, ce qui rend le droit à l'oubli difficile à obtenir. \\
@@ -465,12 +557,12 @@ Avoir une identité numérique comporte des risques, l'usurpation d'identité é
 
 Cette dimension de faux profil se distingue de la dimension de faux compte par deux manières : la première étant que le faux profil sera géré par une personne humaine alors que le faux compte sera certes programmé par une personne humaine mais géré par un robot ou bot. La seconde est qu'un faux compte trouvera sa raison d'être dans le fait de vouloir influencer les personnes qui ont accès à son contenu, comme par exemple pour les bots Twitter, via des retweets d'expressions similaires, ou encore dans le fait de proposer des services, comme les bots Discord, ou certains comptes Twitter, qui corrige les utilisateurs du réseau social faisant des fautes dans leurs tweets sur l'orthographe français des Pokemon. Le faux profil, lui, sera soit dans un but de conservation d'anonymat, soit dans un but matrimonial, soit dans un but de tromperie d'un tiers. Cette notion de tromperie fait naître la dimension malveillante du faux profil, notion que l'on ne trouvera pas dans le faux compte, malgré le caractère malhonnête de certains utilisant des processus de manipulation comme l'astroturfing.\\
 
-Les réseaux sociaux luttent pour pouvoir tenter d'endiguer l'hémorragie du faux profil, principalement dû à son caractère très souvent malveillant. Des solutions existent, les plus connues sont non informatiques, elles peuvent être utilisées par tout utilisateur lambda, quant à celles informatiques, elles reposent sur des dimensions précises comme l'âge, le sexe, le lien existant entre les individus ou les éléments du langage. L'apport proposé consiste en un algorithme regroupant ces différentes dimensions qui, dans l'existant, sont traitées dans plusieurs algorithmes différents ainsi que d'établir un chemin précis via les graphes que tout profil véridique est censé respecter.\\
+Les réseaux sociaux luttent pour pouvoir tenter d'endiguer l'hémorragie du faux profil, principalement dû à son caractère très souvent malveillant. Des solutions existent, les plus connues sont non informatiques, elles peuvent être utilisées par tout utilisateur lambda, quant à celles informatiques, elles reposent sur des dimensions précises comme l'âge, le sexe, le lien existant entre les individus ou les éléments du langage. L'apport proposé consiste de passer par les graphes, afin d'isoler des profils ou groupes de profils n'ayant aucun réseau ou encore de repérer des profils n'ayant pas une activité attendue au regard des informations qui ont été saisies sur ce dernier.\\
 
 Les solutions existantes trouvent leurs limites et ne sont évidemment pas fiables à 100\%. Néanmoins, elles restent tout de même dans énormément de cas, des solutions viables, surtout si la personne à l'origine du faux profil n'est pas une professionnelle.\\
-Quant à mes solutions personnelles, elles n'ont pas pu être testées donc il est impossible, au moment de la rédaction de ce mémoire, d'émettre un jugement sur la viabilité de ces méthodes. \\
+Quant à ma solution personnelle, elle n'a pas pu être testée donc il est impossible, au moment de la rédaction de ce mémoire, d'émettre un réel jugement sur la viabilité de cette méthode. \\
 
-Le plus important reste d'être prudent et toujours méfiant dans la jungle au profil que l'on trouve sur les réseaux sociaux. Le but des faux profils et de certains faux comptes est justement de gagner la confiance de leurs victimes, avoir des doutes sur les intentions des personnes qui surgissent de nulle part est selon moi l'attiude minimaliste à adopter. Ce proverbe d'Aristote me semble idéal pour conclure \textit {"Le doute est le commencement de la sagesse."}
+Le plus important reste d'être prudent et toujours méfiant dans la jungle aux profils que l'on trouve sur les réseaux sociaux. Le but des faux profils et de certains faux comptes est justement de gagner la confiance de leurs victimes, avoir des doutes sur les intentions des personnes qui surgissent de nulle part est selon moi l'attitude minimaliste à adopter. Ce proverbe d'Aristote me semble idéal pour conclure \textit {"Le doute est le commencement de la sagesse."}
 
 \nocite{*}
 \printbibliography
